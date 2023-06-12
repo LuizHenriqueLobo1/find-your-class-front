@@ -1,4 +1,4 @@
-<h1 align="center">find-your-class-back</h1>
+<h1 align="center">find-your-class-front</h1>
 
 ### Sobre
 
