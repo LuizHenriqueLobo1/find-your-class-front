@@ -27,24 +27,24 @@ export function getSchedule(data, disciplineId) {
 }
 
 function customizeSchedules(schedules) {
-  const customizeSchedules = [];
+  const customizedSchedules = [];
   const tempData = {};
   for (const data of schedules) {
     const key = data.dayOfWeek;
     if (tempData[key]) {
-      tempData[key].time = tempData[key].time.split(' - ')[0] + ' - ' + data.time.split(' - ')[1];
+      tempData[key].time = `${tempData[key].time.split(' - ')[0]}-${data.time.split(' - ')[1]}`;
     } else {
       tempData[key] = { ...data };
     }
   }
   for (const key in tempData) {
-    customizeSchedules.push(tempData[key]);
+    customizedSchedules.push(tempData[key]);
   }
-  return sortSchedulesByDayOfWeek(customizeSchedules);
+  return sortSchedulesByDayOfWeek(customizedSchedules);
 }
 
-function sortSchedulesByDayOfWeek(simplifiedSchedules) {
-  simplifiedSchedules.sort((a, b) => {
+function sortSchedulesByDayOfWeek(schedules) {
+  schedules.sort((a, b) => {
     const daysOfWeek = [
       'Domingo',
       'Segunda-feira',
@@ -58,20 +58,10 @@ function sortSchedulesByDayOfWeek(simplifiedSchedules) {
     const dayB = daysOfWeek.indexOf(b.dayOfWeek);
     return dayA - dayB;
   });
-  return simplifiedSchedules;
+  return schedules;
 }
 
 function getDayOfWeek(index) {
   const daysOfWeek = ['', 'Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira', 'Sábado'];
   return daysOfWeek[index];
-}
-
-export function saveDataOnLocalStorage(data) {
-  const parsedData = JSON.stringify(data);
-  localStorage.setItem('data', parsedData);
-}
-
-export function readDataOfLocalStorage() {
-  const data = localStorage.getItem('data');
-  return JSON.parse(data);
 }

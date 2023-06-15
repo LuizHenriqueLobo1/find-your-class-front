@@ -2,7 +2,9 @@ import { useEffect, useState } from 'react';
 import { Button, Form, Spinner, Table } from 'react-bootstrap';
 import api from '../api/api';
 import '../App.css';
-import { getSchedule, minNumberOfSchedules, readDataOfLocalStorage, saveDataOnLocalStorage } from '../utils/utils';
+import { readDataOfLocalStorage, saveDataOnLocalStorage } from '../utils/storage';
+import { getSchedule, minNumberOfSchedules } from '../utils/utils';
+import ConfirmationModal from './ConfirmationModal';
 import DataLoadError from './DataLoadError';
 import Footer from './Footer';
 import SearchResultCard from './SearchResultCard';
@@ -11,9 +13,10 @@ export default function Searcher() {
   const [disciplineId, setDisciplineId] = useState('');
   const [rawData, setRawData] = useState([]);
   const [parsedData, setParsedData] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [errorOnLoading, setErrorOnLoading] = useState(false);
   const [haveSearch, setHaveSearch] = useState(false);
+  const [showConfirmationModal, setShowConfirmationModal] = useState(false);
 
   useEffect(() => {
     loadData();
@@ -22,27 +25,36 @@ export default function Searcher() {
   function loadData() {
     const data = readDataOfLocalStorage();
     if (data) {
+      setLoading(true);
       setRawData(data);
       setErrorOnLoading(false);
       setLoading(false);
     } else {
-      api
-        .get('/get-sheet-data', {
-          headers: {
-            token: import.meta.env.VITE_TOKEN,
-          },
-        })
-        .then((response) => {
-          saveDataOnLocalStorage(response.data.data);
-          setRawData(response.data.data);
-          setErrorOnLoading(false);
-          setLoading(false);
-        })
-        .catch((_) => {
-          setErrorOnLoading(true);
-          setLoading(false);
-        });
+      makeRequestToGetData();
     }
+  }
+
+  function makeRequestToGetData() {
+    setLoading(true);
+    setRawData([]);
+    setParsedData([]);
+    setHaveSearch(false);
+    api
+      .get('/get-sheet-data', {
+        headers: {
+          token: import.meta.env.VITE_TOKEN,
+        },
+      })
+      .then((response) => {
+        saveDataOnLocalStorage(response.data.data);
+        setRawData(response.data.data);
+        setErrorOnLoading(false);
+        setLoading(false);
+      })
+      .catch((_) => {
+        setErrorOnLoading(true);
+        setLoading(false);
+      });
   }
 
   function searchRoom() {
@@ -87,12 +99,20 @@ export default function Searcher() {
                 placeholder="INF027, MAT222, LET102..."
               />
             </Form.Group>
-            <Form.Group style={{ margin: '15px 0', textAlign: 'center' }}>
+            <Form.Group style={{ display: 'flex', margin: '15px 0', justifyContent: 'center', gap: '10px' }}>
               <Button
                 disabled={!disciplineId.length}
                 onClick={() => searchRoom()}
               >
                 Buscar
+              </Button>
+              <Button
+                variant="secondary"
+                onClick={() => {
+                  setShowConfirmationModal(true);
+                }}
+              >
+                Atualizar
               </Button>
             </Form.Group>
           </Form>
@@ -113,8 +133,8 @@ export default function Searcher() {
                   </tr>
                 </thead>
                 <tbody>
-                  {parsedData.map((element) => (
-                    <tr>
+                  {parsedData.map((element, index) => (
+                    <tr key={index}>
                       <td>{element.discipline}</td>
                       <td>{element.block}</td>
                       <td>{element.roomName}</td>
@@ -135,8 +155,11 @@ export default function Searcher() {
                   gap: '10px',
                 }}
               >
-                {parsedData.map((element) => (
-                  <SearchResultCard element={element} />
+                {parsedData.map((element, index) => (
+                  <SearchResultCard
+                    element={element}
+                    key={index}
+                  />
                 ))}
               </div>
             )
@@ -144,6 +167,11 @@ export default function Searcher() {
             haveSearch && <div>Nada encontrado! 😔</div>
           )}
           <Footer />
+          <ConfirmationModal
+            show={showConfirmationModal}
+            setShow={setShowConfirmationModal}
+            onConfirm={makeRequestToGetData}
+          />
         </>
       )}
     </div>
