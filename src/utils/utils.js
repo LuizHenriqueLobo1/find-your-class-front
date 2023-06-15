@@ -32,7 +32,7 @@ function customizeSchedules(schedules) {
   for (const data of schedules) {
     const key = data.dayOfWeek;
     if (tempData[key]) {
-      tempData[key].time = `${tempData[key].time.split(' - ')[0]}-${data.time.split(' - ')[1]}`;
+      tempData[key].time = `${tempData[key].time.split(' - ')[0]} - ${data.time.split(' - ')[1]}`;
     } else {
       tempData[key] = { ...data };
     }

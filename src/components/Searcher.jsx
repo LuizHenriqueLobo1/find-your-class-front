@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
-import { Button, Form, Spinner, Table } from 'react-bootstrap';
+import { Button, Form, ProgressBar, Spinner, Table } from 'react-bootstrap';
 import api from '../api/api';
 import '../App.css';
-import { readDataOfLocalStorage, saveDataOnLocalStorage } from '../utils/storage';
+// import { readDataOfLocalStorage, saveDataOnLocalStorage } from '../utils/storage';
 import { getSchedule, minNumberOfSchedules } from '../utils/utils';
 import ConfirmationModal from './ConfirmationModal';
 import DataLoadError from './DataLoadError';
@@ -19,20 +19,20 @@ export default function Searcher() {
   const [showConfirmationModal, setShowConfirmationModal] = useState(false);
 
   useEffect(() => {
-    loadData();
+    makeRequestToGetData();
   }, []);
 
-  function loadData() {
-    const data = readDataOfLocalStorage();
-    if (data) {
-      setLoading(true);
-      setRawData(data);
-      setErrorOnLoading(false);
-      setLoading(false);
-    } else {
-      makeRequestToGetData();
-    }
-  }
+  // function loadData() {
+  //   const data = readDataOfLocalStorage();
+  //   if (data) {
+  //     setLoading(true);
+  //     setRawData(data);
+  //     setErrorOnLoading(false);
+  //     setLoading(false);
+  //   } else {
+  //     makeRequestToGetData();
+  //   }
+  // }
 
   function makeRequestToGetData() {
     setLoading(true);
@@ -46,7 +46,7 @@ export default function Searcher() {
         },
       })
       .then((response) => {
-        saveDataOnLocalStorage(response.data.data);
+        // saveDataOnLocalStorage(response.data.data);
         setRawData(response.data.data);
         setErrorOnLoading(false);
         setLoading(false);
@@ -106,14 +106,14 @@ export default function Searcher() {
               >
                 Buscar
               </Button>
-              <Button
+              {/* <Button
                 variant="secondary"
                 onClick={() => {
                   setShowConfirmationModal(true);
                 }}
               >
                 Atualizar
-              </Button>
+              </Button> */}
             </Form.Group>
           </Form>
           {parsedData.length ? (
