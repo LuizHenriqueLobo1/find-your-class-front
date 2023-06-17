@@ -17,7 +17,8 @@
 2. Crie o **.env** a partir do **.env.example** utilizando:
    - Windows: `copy .env.example .env`
    - Linux: `cp .env.example .env`
-3. Execute o projeto `npm start`
+3. Instale as dependências do projeto `npm i`
+4. Execute o projeto `npm start`
 
 ### Extra
 
