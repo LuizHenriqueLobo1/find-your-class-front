@@ -20,10 +20,42 @@ export function getSchedule(data, disciplineId) {
     }
   }
   if (schedules.length <= minNumberOfSchedules) {
-    return customizeSchedules(schedules);
+    return convertDataToTableFormat(customizeSchedules(schedules));
   } else {
-    return schedules;
+    return convertDataToTableFormat(schedules);
   }
+}
+
+function convertDataToTableFormat(data) {
+  const tableData = {};
+
+  // Inicializa a estrutura da tabela
+  data.forEach(({ dayOfWeek, time, discipline, block, roomName }) => {
+    const [start, end] = time.split(' - ');
+    const key = `${start} - ${end}`;
+
+    if (!tableData[key]) {
+      tableData[key] = {};
+    }
+
+    tableData[key][dayOfWeek] = `${discipline} | ${block} - ${roomName}`;
+  });
+
+  // Converte para um array para ser usado no Antd Table
+  const tableArray = Object.keys(tableData).map((time) => ({
+    key: time,
+    time,
+    ...tableData[time],
+  }));
+
+  // Ordena o array pela hora
+  tableArray.sort((a, b) => {
+    const [startA] = a.time.split(' - ');
+    const [startB] = b.time.split(' - ');
+    return new Date(`2022-01-01 ${startA}`) - new Date(`2022-01-01 ${startB}`);
+  });
+
+  return tableArray;
 }
 
 function customizeSchedules(schedules) {
@@ -40,25 +72,7 @@ function customizeSchedules(schedules) {
   for (const key in tempData) {
     customizedSchedules.push(tempData[key]);
   }
-  return sortSchedulesByDayOfWeek(customizedSchedules);
-}
-
-function sortSchedulesByDayOfWeek(schedules) {
-  schedules.sort((a, b) => {
-    const daysOfWeek = [
-      'Domingo',
-      'Segunda-feira',
-      'Terça-feira',
-      'Quarta-feira',
-      'Quinta-feira',
-      'Sexta-feira',
-      'Sábado',
-    ];
-    const dayA = daysOfWeek.indexOf(a.dayOfWeek);
-    const dayB = daysOfWeek.indexOf(b.dayOfWeek);
-    return dayA - dayB;
-  });
-  return schedules;
+  return customizedSchedules;
 }
 
 function getDayOfWeek(index) {
