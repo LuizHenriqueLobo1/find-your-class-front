@@ -5,6 +5,7 @@ import api from './api/api';
 import CalendarCreator from './components/CalendarCreator';
 import Finder from './components/Finder';
 import Settings from './components/Settings';
+import { Storage } from './storage/storage';
 
 const { Header, Content, Footer } = Layout;
 const { Title, Link, Text } = Typography;
@@ -44,7 +45,10 @@ function App() {
   return (
     <ConfigProvider
       locale={ptBR}
-      theme={{ algorithm: defaultAlgorithm, token: { colorPrimary: '#5A54F9' } }}
+      theme={{
+        algorithm: Storage.getUseDarkTheme() ? darkAlgorithm : defaultAlgorithm,
+        token: { colorPrimary: '#5A54F9' },
+      }}
     >
       <Spin spinning={loading}>
         <Layout style={{ height: '100vh', width: '100vw' }}>
@@ -101,7 +105,7 @@ function App() {
                 items={[
                   { key: 'finder', label: 'Buscador', children: <Finder data={data} /> },
                   { key: 'calendarCreator', label: 'Criar calendário', children: <CalendarCreator />, disabled: true },
-                  { key: 'settings', label: 'Configurações', children: <Settings />, disabled: true },
+                  { key: 'settings', label: 'Configurações', children: <Settings /> },
                 ]}
               />
             )}
