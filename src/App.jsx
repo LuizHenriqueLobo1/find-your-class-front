@@ -31,7 +31,7 @@ function App() {
       })
       .then((response) => (response.data.length ? response.data : null))
       .catch((_) => null);
-    if (response) {
+    if (response.length) {
       setData(response);
       setErrorOnLoading(false);
     } else {

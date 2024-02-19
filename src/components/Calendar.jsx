@@ -30,11 +30,10 @@ export default function Calendar() {
       )
       .then((response) => (response.status === 200 && response.data ? transformToTable(response.data) : []))
       .catch((_) => []);
-    if (!response.length) {
-      message.error('Erro ao tentar obter os dados e gerar o calendário!');
+    if (response.length) {
+      setFinalData(response);
+      setGenerating(false);
     }
-    setFinalData(response);
-    setGenerating(false);
   }
 
   async function saveCalendar() {
