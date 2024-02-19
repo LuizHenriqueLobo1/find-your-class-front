@@ -1,8 +1,9 @@
-import { Button, Card, ConfigProvider, Flex, Layout, Spin, Tabs, Typography, theme } from 'antd';
+import { ConfigProvider, Layout, Spin, Tabs, Typography, theme } from 'antd';
 import ptBR from 'antd/lib/locale/pt_BR';
 import { useEffect, useState } from 'react';
 import api from './api/api';
-import CalendarCreator from './components/CalendarCreator';
+import Calendar from './components/Calendar';
+import ErrorScreen from './components/ErrorScreen';
 import Finder from './components/Finder';
 import Settings from './components/Settings';
 import { Storage } from './storage/storage';
@@ -16,31 +17,44 @@ function App() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [errorOnLoading, setErrorOnLoading] = useState(false);
+  const [selectedTab, setSelectedTab] = useState();
 
-  function makeRequestToGetData() {
+  async function makeRequestToGetData() {
     setLoading(true);
     setErrorOnLoading(false);
     setData([]);
-    api
+    const response = await api
       .get('/get-sheet-data', {
         headers: {
           token: import.meta.env.VITE_TOKEN,
         },
       })
-      .then((response) => {
-        setData(response.data.data);
-        setErrorOnLoading(false);
-        setLoading(false);
-      })
-      .catch((_) => {
-        setErrorOnLoading(true);
-        setLoading(false);
-      });
+      .then((response) => (response.data.length ? response.data : null))
+      .catch((_) => null);
+    if (response) {
+      setData(response);
+      setErrorOnLoading(false);
+    } else {
+      setErrorOnLoading(true);
+    }
+    setLoading(false);
   }
 
   useEffect(() => {
-    makeRequestToGetData();
+    const calendar = Storage.getCalendar();
+    if (calendar.length && !Storage.getAlwaysStartOnSearchTab()) {
+      setSelectedTab(2);
+    } else {
+      setSelectedTab(1);
+      makeRequestToGetData();
+    }
   }, []);
+
+  useEffect(() => {
+    if (!data.length && selectedTab === 1) {
+      makeRequestToGetData();
+    }
+  }, [selectedTab]);
 
   return (
     <ConfigProvider
@@ -69,44 +83,26 @@ function App() {
           </Header>
           <Content>
             {errorOnLoading ? (
-              <Flex
-                style={{ width: '100%', height: '100%' }}
-                align="center"
-                justify="center"
-              >
-                <Card
-                  title={
-                    <Title
-                      style={{ margin: 0 }}
-                      level={4}
-                    >
-                      Atenção!
-                    </Title>
-                  }
-                  style={{ width: 400, textAlign: 'center' }}
-                >
-                  Tivemos um problema ao tentar carregar os dados, clique no botão abaixo para tentar novamente!
-                  <Flex
-                    style={{ width: '100%', marginTop: 20 }}
-                    justify="center"
-                  >
-                    <Button
-                      type="primary"
-                      onClick={makeRequestToGetData}
-                    >
-                      Recarregar
-                    </Button>
-                  </Flex>
-                </Card>
-              </Flex>
+              <ErrorScreen getData={makeRequestToGetData} />
             ) : (
               <Tabs
                 style={{ display: 'flex', alignItems: 'center', width: '100%' }}
                 items={[
-                  { key: 'finder', label: 'Buscador', children: <Finder data={data} /> },
-                  { key: 'calendarCreator', label: 'Criar calendário', children: <CalendarCreator />, disabled: true },
-                  { key: 'settings', label: 'Configurações', children: <Settings /> },
+                  {
+                    key: 1,
+                    label: 'Buscador',
+                    children: (
+                      <Finder
+                        data={data}
+                        getDataRequest={makeRequestToGetData}
+                      />
+                    ),
+                  },
+                  { key: 2, label: 'Meu calendário', children: <Calendar /> },
+                  { key: 3, label: 'Configurações', children: <Settings /> },
                 ]}
+                activeKey={selectedTab}
+                onChange={(tab) => setSelectedTab(tab)}
               />
             )}
           </Content>

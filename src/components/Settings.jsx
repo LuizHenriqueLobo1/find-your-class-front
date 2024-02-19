@@ -6,6 +6,7 @@ const { Text } = Typography;
 
 export default function Settings() {
   const [darkTheme, setDarkTheme] = useState(Storage.getUseDarkTheme());
+  const [alwaysStartOnSearchTab, setAlwaysStartOnSearchTab] = useState(Storage.getAlwaysStartOnSearchTab());
 
   async function changeTheme(value) {
     Storage.setUseDarkTheme(value);
@@ -14,24 +15,41 @@ export default function Settings() {
     location.reload();
   }
 
+  function changeAlwaysStartOnSearchTab(value) {
+    Storage.setAlwaysStartOnSearchTab(value);
+    setAlwaysStartOnSearchTab(value);
+  }
+
   return (
     <Form>
       <Flex
-        style={{ width: '100vw' }}
+        style={{ width: '100%' }}
         vertical
-        align="center"
-        gap={5}
+        align="flex-start"
+        gap={8}
       >
         <Flex
+          style={{ width: '100%' }}
           align="center"
-          justify="center"
-          gap={5}
+          justify="space-between"
         >
           <Text>Tema escuro:</Text>
           <Switch
             style={{ marginTop: 3 }}
             value={darkTheme}
             onChange={changeTheme}
+          />
+        </Flex>
+        <Flex
+          align="center"
+          justify="space-between"
+          gap={15}
+        >
+          <Text>Sempre iniciar na aba de busca:</Text>
+          <Switch
+            style={{ marginTop: 3 }}
+            value={alwaysStartOnSearchTab}
+            onChange={changeAlwaysStartOnSearchTab}
           />
         </Flex>
       </Flex>

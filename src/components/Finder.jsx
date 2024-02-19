@@ -1,6 +1,8 @@
+import { SearchOutlined } from '@ant-design/icons';
 import { Button, Flex, Form, Input, Table, Typography } from 'antd';
 import { useState } from 'react';
-import { getSchedule } from '../utils/utils';
+import { searchDiscipline } from '../utils/utils';
+import ResultTable from './ResultTable';
 
 const { Text } = Typography;
 
@@ -12,9 +14,8 @@ export default function Finder({ data }) {
 
   function searchRoom() {
     if (disciplineCode.length) {
-      const filteredData = data.flatMap((element) => element);
-      const finalData = getSchedule(filteredData, disciplineCode);
-      setFinalData(finalData);
+      const localFinalData = searchDiscipline(data, disciplineCode);
+      setFinalData(localFinalData);
     }
   }
 
@@ -39,67 +40,12 @@ export default function Finder({ data }) {
           type="primary"
           style={{ marginTop: 5 }}
           onClick={searchRoom}
+          icon={<SearchOutlined />}
           htmlType="submit"
         >
           Buscar
         </Button>
-        <Table
-          style={{ width: '80%', marginTop: 20 }}
-          scroll={{ y: 350, x: 800 }}
-          dataSource={finalData}
-          bordered
-          columns={[
-            {
-              title: 'Horários',
-              dataIndex: 'time',
-              key: 'time',
-              align: 'center',
-            },
-            {
-              title: 'Segunda-feira',
-              dataIndex: 'Segunda-feira',
-              key: 'Segunda-feira',
-              align: 'center',
-            },
-            {
-              title: 'Terça-feira',
-              dataIndex: 'Terça-feira',
-              key: 'Terça-feira',
-              align: 'center',
-            },
-            {
-              title: 'Quarta-feira',
-              dataIndex: 'Quarta-feira',
-              key: 'Quarta-feira',
-              align: 'center',
-            },
-            {
-              title: 'Quinta-feira',
-              dataIndex: 'Quinta-feira',
-              key: 'Quinta-feira',
-              align: 'center',
-            },
-            {
-              title: 'Sexta-feira',
-              dataIndex: 'Sexta-feira',
-              key: 'Sexta-feira',
-              align: 'center',
-            },
-            {
-              title: 'Sábado',
-              dataIndex: 'Sábado',
-              key: 'Sábado',
-              align: 'center',
-            },
-            {
-              title: 'Domingo',
-              dataIndex: 'Domingo',
-              key: 'Domingo',
-              align: 'center',
-            },
-          ]}
-          pagination={false}
-        />
+        <ResultTable dataSource={finalData} />
       </Flex>
     </Form>
   );
