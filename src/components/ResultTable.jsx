@@ -4,7 +4,7 @@ export default function ResultTable({ dataSource, loading }) {
   return (
     <Table
       style={{ width: '80%', marginTop: 20 }}
-      scroll={{ y: 350, x: 800 }}
+      scroll={{ y: '50vh', x: 800 }}
       dataSource={dataSource}
       loading={loading}
       bordered
