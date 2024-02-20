@@ -1,8 +1,8 @@
-import { Flex, Form, Switch, Typography } from 'antd';
+import { Divider, Flex, Form, Switch, Typography } from 'antd';
 import { useState } from 'react';
 import { Storage } from '../storage/storage';
 
-const { Text } = Typography;
+const { Text, Link } = Typography;
 
 export default function Settings() {
   const [darkTheme, setDarkTheme] = useState(Storage.getUseDarkTheme());
@@ -21,9 +21,9 @@ export default function Settings() {
   }
 
   return (
-    <Form>
+    <Form style={{ marginTop: 12 }}>
       <Flex
-        style={{ width: '100%' }}
+        style={{ width: '300px' }}
         vertical
         align="flex-start"
         gap={8}
@@ -41,9 +41,9 @@ export default function Settings() {
           />
         </Flex>
         <Flex
+          style={{ width: '100%' }}
           align="center"
           justify="space-between"
-          gap={15}
         >
           <Text>Sempre iniciar na aba de busca:</Text>
           <Switch
@@ -51,6 +51,27 @@ export default function Settings() {
             value={alwaysStartOnSearchTab}
             onChange={changeAlwaysStartOnSearchTab}
           />
+        </Flex>
+        <Divider />
+        <Flex
+          style={{ width: '100%' }}
+          align="center"
+          justify="center"
+          vertical
+          gap={10}
+        >
+          <Text style={{ textAlign: 'center' }}>
+            Esta aplicação utiliza os dados da planilha de alocação das aulas do semestre 2024.1 disponibilizada pelo
+            IFBA.
+          </Text>
+          <Link
+            type="primary"
+            style={{ color: '#5A54F9', textDecoration: 'underline' }}
+            href="https://docs.google.com/spreadsheets/d/1cCxv5gzbj5uAFJtyF6h-pxK4RXYurShUsLqO2ye6Ark"
+            target="_blank"
+          >
+            Ir para planilha
+          </Link>
         </Flex>
       </Flex>
     </Form>
