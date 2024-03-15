@@ -11,7 +11,7 @@ export default defineConfig({
       includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'masked-icon.svg'],
       manifest: {
         name: 'Find Your Class',
-        short_name: 'FYC',
+        short_name: 'Find Your Class',
         description: 'Um simples app para consultar os horários e locais das suas aulas.',
         icons: [
           {
