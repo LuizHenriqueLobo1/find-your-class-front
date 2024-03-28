@@ -1,12 +1,10 @@
 import { SearchOutlined } from '@ant-design/icons';
-import { Button, Flex, Form, Input, Table, Typography } from 'antd';
+import { Button, Flex, Form, Input, Typography } from 'antd';
 import { useState } from 'react';
 import { searchDiscipline } from '../utils/utils';
 import ResultTable from './ResultTable';
 
 const { Text } = Typography;
-
-const { Item } = Form;
 
 export default function Finder({ data }) {
   const [disciplineCode, setDisciplineCode] = useState('');
@@ -45,7 +43,10 @@ export default function Finder({ data }) {
         >
           Buscar
         </Button>
-        <ResultTable dataSource={finalData} />
+        <ResultTable
+          dataSource={finalData}
+          type={1}
+        />
       </Flex>
     </Form>
   );

@@ -86,7 +86,7 @@ function App() {
               <ErrorScreen getData={makeRequestToGetData} />
             ) : (
               <Tabs
-                style={{ display: 'flex', alignItems: 'center', width: '100%' }}
+                centered
                 items={[
                   {
                     key: 1,

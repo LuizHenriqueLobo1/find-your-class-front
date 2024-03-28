@@ -1,4 +1,4 @@
-import { Divider, Flex, Form, Switch, Typography } from 'antd';
+import { Divider, Flex, Switch, Typography } from 'antd';
 import { useState } from 'react';
 import { Storage } from '../storage/storage';
 
@@ -21,11 +21,13 @@ export default function Settings() {
   }
 
   return (
-    <Form style={{ marginTop: 12 }}>
+    <Flex
+      style={{ marginTop: 12 }}
+      justify="center"
+    >
       <Flex
         style={{ width: '300px' }}
         vertical
-        align="flex-start"
         gap={8}
       >
         <Flex
@@ -74,6 +76,6 @@ export default function Settings() {
           </Link>
         </Flex>
       </Flex>
-    </Form>
+    </Flex>
   );
 }

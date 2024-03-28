@@ -110,6 +110,7 @@ export default function Calendar() {
         <ResultTable
           dataSource={finalData}
           loading={generating}
+          type={2}
         />
       </Flex>
     </Form>
