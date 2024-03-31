@@ -29,3 +29,5 @@ export function transformToTable(data) {
 
   return finalData;
 }
+
+export const COLORS = ['red', 'green', 'blue', 'yellow', 'magenta', 'purple', 'orange', 'cyan', 'volcano', 'lime'];

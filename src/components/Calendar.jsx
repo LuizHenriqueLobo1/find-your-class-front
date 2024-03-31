@@ -1,9 +1,9 @@
-import { CalendarOutlined, InfoCircleOutlined, SaveOutlined } from '@ant-design/icons';
-import { Button, Flex, Form, Select, Tooltip, Typography, message } from 'antd';
+import { CalendarOutlined, CloseOutlined, InfoCircleOutlined, SaveOutlined } from '@ant-design/icons';
+import { Button, Flex, Form, Select, Tag, Tooltip, Typography, message } from 'antd';
 import { useEffect, useState } from 'react';
 import api from '../api/api';
 import { Storage } from '../storage/storage';
-import { transformToTable } from '../utils/utils';
+import { COLORS, transformToTable } from '../utils/utils';
 import ResultTable from './ResultTable';
 
 const { Text } = Typography;
@@ -17,7 +17,7 @@ export default function Calendar() {
 
   async function generateCalendar(customDisciplines) {
     setGenerating(true);
-    message.destroy();
+    messageApi.destroy();
     const response = await api
       .post(
         '/get-sheet-data-to-calendar',
@@ -37,12 +37,12 @@ export default function Calendar() {
   }
 
   async function saveCalendar() {
-    message.destroy();
+    messageApi.destroy();
     if (!disciplines.length || !finalData.length) {
-      message.error('Tivemos um problema ao tentar salvar seu calendário!');
+      messageApi.error('Tivemos um problema ao tentar salvar seu calendário!');
     } else {
       Storage.setCalendar(disciplines);
-      message.success('Calendário salvo com sucesso!');
+      messageApi.success('Calendário salvo com sucesso!');
     }
   }
 
@@ -78,12 +78,35 @@ export default function Calendar() {
           suffixIcon={false}
           value={disciplines}
           onChange={(value) => {
-            if (value.length <= 10) {
-              setDisciplines(value.map((value) => value.toUpperCase()));
-            } else {
-              messageApi.destroy();
+            const currentValue = value[value.length - 1];
+            const existsOnDisciplines = disciplines.indexOf(currentValue.toUpperCase());
+            messageApi.destroy();
+            if (existsOnDisciplines !== -1) {
+              messageApi.warning('Disciplina já informada!');
+            } else if (value.length > 10) {
               messageApi.warning('Limite de disciplinas atingido!');
+            } else {
+              setDisciplines(value.map((value) => value.toUpperCase()));
             }
+          }}
+          tagRender={(value) => {
+            const index = disciplines.indexOf(value.label);
+            return (
+              <Tag
+                style={{ display: 'flex' }}
+                closeIcon={<CloseOutlined />}
+                closable
+                color={COLORS[index]}
+                onClose={() => {
+                  const valueIndex = disciplines.indexOf(value.label);
+                  const newDisciplines = [...disciplines];
+                  newDisciplines.splice(valueIndex, 1);
+                  setDisciplines(newDisciplines);
+                }}
+              >
+                {value.label}
+              </Tag>
+            );
           }}
         />
         <Flex gap={10}>
@@ -111,6 +134,7 @@ export default function Calendar() {
           dataSource={finalData}
           loading={generating}
           type={2}
+          disciplines={disciplines}
         />
       </Flex>
     </Form>

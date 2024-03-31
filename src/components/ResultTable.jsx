@@ -1,8 +1,9 @@
 import { Flex, Table, Tag, Typography } from 'antd';
+import { COLORS } from '../utils/utils';
 
 const { Text } = Typography;
 
-function renderColumn(element, type) {
+function renderColumn(element, type, disciplines) {
   if (!element || !element.length) {
     return '';
   }
@@ -23,8 +24,15 @@ function renderColumn(element, type) {
       gap={5}
     >
       <Tag
-        style={{ fontWeight: 600 }}
-        color={type === 1 ? '#5a54f9' : ''}
+        style={{
+          fontWeight: 600,
+          maxWidth: 100,
+          whiteSpace: 'nowrap',
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
+          marginInlineEnd: 0,
+        }}
+        color={type === 1 ? '#5a54f9' : COLORS[disciplines.findIndex((value) => data.discipline.includes(value))]}
       >
         {data.discipline}
       </Tag>
@@ -35,7 +43,7 @@ function renderColumn(element, type) {
   );
 }
 
-export default function ResultTable({ dataSource, loading, type }) {
+export default function ResultTable({ dataSource, loading, type, disciplines }) {
   return (
     <Table
       style={{ width: '80%', marginTop: 20 }}
@@ -55,42 +63,42 @@ export default function ResultTable({ dataSource, loading, type }) {
           dataIndex: 'monday',
           key: 'monday',
           align: 'center',
-          render: (element) => renderColumn(element, type),
+          render: (element) => renderColumn(element, type, disciplines),
         },
         {
           title: 'Terça-feira',
           dataIndex: 'tuesday',
           key: 'tuesday',
           align: 'center',
-          render: (element) => renderColumn(element, type),
+          render: (element) => renderColumn(element, type, disciplines),
         },
         {
           title: 'Quarta-feira',
           dataIndex: 'wednesday',
           key: 'wednesday',
           align: 'center',
-          render: (element) => renderColumn(element, type),
+          render: (element) => renderColumn(element, type, disciplines),
         },
         {
           title: 'Quinta-feira',
           dataIndex: 'thursday',
           key: 'thursday',
           align: 'center',
-          render: (element) => renderColumn(element, type),
+          render: (element) => renderColumn(element, type, disciplines),
         },
         {
           title: 'Sexta-feira',
           dataIndex: 'friday',
           key: 'friday',
           align: 'center',
-          render: (element) => renderColumn(element, type),
+          render: (element) => renderColumn(element, type, disciplines),
         },
         {
           title: 'Sábado',
           dataIndex: 'saturday',
           key: 'saturday',
           align: 'center',
-          render: (element) => renderColumn(element, type),
+          render: (element) => renderColumn(element, type, disciplines),
         },
       ]}
       pagination={false}
