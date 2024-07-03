@@ -6,7 +6,7 @@ import ResultTable from './ResultTable';
 
 const { Text } = Typography;
 
-export default function Finder({ data }) {
+export default function Finder({ data, tableColumns }) {
   const [disciplineCode, setDisciplineCode] = useState('');
   const [finalData, setFinalData] = useState([]);
 
@@ -46,6 +46,7 @@ export default function Finder({ data }) {
         <ResultTable
           dataSource={finalData}
           type={1}
+          tableColumns={tableColumns}
         />
       </Flex>
     </Form>

@@ -8,7 +8,7 @@ import ResultTable from './ResultTable';
 
 const { Text } = Typography;
 
-export default function Calendar() {
+export default function Calendar({ tableColumns }) {
   const [messageApi, contextHolder] = message.useMessage();
 
   const [disciplines, setDisciplines] = useState([]);
@@ -135,6 +135,7 @@ export default function Calendar() {
           loading={generating}
           type={2}
           disciplines={disciplines}
+          tableColumns={tableColumns}
         />
       </Flex>
     </Form>

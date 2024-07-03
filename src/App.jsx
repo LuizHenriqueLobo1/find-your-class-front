@@ -18,6 +18,7 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [errorOnLoading, setErrorOnLoading] = useState(false);
   const [selectedTab, setSelectedTab] = useState();
+  const [tableColumns, setTableColumns] = useState(Storage.getTableColumns());
 
   async function makeRequestToGetData() {
     setLoading(true);
@@ -95,11 +96,21 @@ function App() {
                       <Finder
                         data={data}
                         getDataRequest={makeRequestToGetData}
+                        tableColumns={tableColumns}
                       />
                     ),
                   },
-                  { key: 2, label: 'Meu calendário', children: <Calendar /> },
-                  { key: 3, label: 'Configurações', children: <Settings /> },
+                  { key: 2, label: 'Meu calendário', children: <Calendar tableColumns={tableColumns} /> },
+                  {
+                    key: 3,
+                    label: 'Configurações',
+                    children: (
+                      <Settings
+                        tableColumns={tableColumns}
+                        setTableColumns={setTableColumns}
+                      />
+                    ),
+                  },
                 ]}
                 activeKey={selectedTab}
                 onChange={(tab) => setSelectedTab(tab)}
@@ -119,7 +130,7 @@ function App() {
               <Link
                 type="primary"
                 style={{ color: '#5A54F9', fontSize: 16, textDecoration: 'underline' }}
-                href="https://github.com/luizhenriquelobo1"
+                href="https://linktr.ee/luizhenriquelobo"
                 target="_blank"
               >
                 Luiz Henrique Lobo

@@ -1,10 +1,10 @@
-import { Divider, Flex, Switch, Typography } from 'antd';
-import { useState } from 'react';
+import { Divider, Flex, Select, Switch, Typography } from 'antd';
+import { useEffect, useState } from 'react';
 import { Storage } from '../storage/storage';
 
 const { Text, Link } = Typography;
 
-export default function Settings() {
+export default function Settings({ tableColumns, setTableColumns }) {
   const [darkTheme, setDarkTheme] = useState(Storage.getUseDarkTheme());
   const [alwaysStartOnSearchTab, setAlwaysStartOnSearchTab] = useState(Storage.getAlwaysStartOnSearchTab());
 
@@ -19,6 +19,10 @@ export default function Settings() {
     Storage.setAlwaysStartOnSearchTab(value);
     setAlwaysStartOnSearchTab(value);
   }
+
+  useEffect(() => {
+    Storage.setTableColumns(tableColumns);
+  }, [tableColumns]);
 
   return (
     <Flex
@@ -54,7 +58,28 @@ export default function Settings() {
             onChange={changeAlwaysStartOnSearchTab}
           />
         </Flex>
-        <Divider />
+        <Divider style={{ margin: '10px 0' }} />
+        <Flex
+          vertical
+          style={{ width: '100%' }}
+        >
+          <Text style={{ marginBottom: 10 }}>Colunas de dias da tabela:</Text>
+          <Select
+            value={tableColumns}
+            onChange={(values) => setTableColumns(values)}
+            showSearch={false}
+            mode="multiple"
+            options={[
+              { value: 1, label: 'Segunda-feira' },
+              { value: 2, label: 'Terça-feira' },
+              { value: 3, label: 'Quarta-feira' },
+              { value: 4, label: 'Quinta-feira' },
+              { value: 5, label: 'Sexta-feira' },
+              { value: 6, label: 'Sábado' },
+            ]}
+          />
+        </Flex>
+        <Divider style={{ margin: '10px 0' }} />
         <Flex
           style={{ width: '100%' }}
           align="center"

@@ -24,4 +24,12 @@ export class Storage {
   static getCalendar() {
     return JSON.parse(storage.getItem('calendar')) || [];
   }
+
+  static setTableColumns(tableColumns) {
+    storage.setItem('columns', JSON.stringify(tableColumns));
+  }
+
+  static getTableColumns() {
+    return JSON.parse(storage.getItem('columns')) || [1, 2, 3, 4, 5, 6];
+  }
 }

@@ -43,7 +43,7 @@ function renderColumn(element, type, disciplines) {
   );
 }
 
-export default function ResultTable({ dataSource, loading, type, disciplines }) {
+export default function ResultTable({ dataSource, loading, type, disciplines, tableColumns }) {
   return (
     <Table
       style={{ width: '80%', marginTop: 20 }}
@@ -64,6 +64,7 @@ export default function ResultTable({ dataSource, loading, type, disciplines }) 
           key: 'monday',
           align: 'center',
           render: (element) => renderColumn(element, type, disciplines),
+          hidden: !tableColumns.includes(1),
         },
         {
           title: 'Terça-feira',
@@ -71,6 +72,7 @@ export default function ResultTable({ dataSource, loading, type, disciplines }) 
           key: 'tuesday',
           align: 'center',
           render: (element) => renderColumn(element, type, disciplines),
+          hidden: !tableColumns.includes(2),
         },
         {
           title: 'Quarta-feira',
@@ -78,6 +80,7 @@ export default function ResultTable({ dataSource, loading, type, disciplines }) 
           key: 'wednesday',
           align: 'center',
           render: (element) => renderColumn(element, type, disciplines),
+          hidden: !tableColumns.includes(3),
         },
         {
           title: 'Quinta-feira',
@@ -85,6 +88,7 @@ export default function ResultTable({ dataSource, loading, type, disciplines }) 
           key: 'thursday',
           align: 'center',
           render: (element) => renderColumn(element, type, disciplines),
+          hidden: !tableColumns.includes(4),
         },
         {
           title: 'Sexta-feira',
@@ -92,6 +96,7 @@ export default function ResultTable({ dataSource, loading, type, disciplines }) 
           key: 'friday',
           align: 'center',
           render: (element) => renderColumn(element, type, disciplines),
+          hidden: !tableColumns.includes(5),
         },
         {
           title: 'Sábado',
@@ -99,6 +104,7 @@ export default function ResultTable({ dataSource, loading, type, disciplines }) 
           key: 'saturday',
           align: 'center',
           render: (element) => renderColumn(element, type, disciplines),
+          hidden: !tableColumns.includes(6),
         },
       ]}
       pagination={false}
