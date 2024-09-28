@@ -14,12 +14,16 @@ const { Title, Link, Text } = Typography;
 const { defaultAlgorithm, darkAlgorithm } = theme;
 
 function App() {
-  const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(false);
   const [selectedTab, setSelectedTab] = useState();
-  const [tableColumns, setTableColumns] = useState(Storage.getTableColumns());
+
+  const [data, setData] = useState([]);
   const [page, setPage] = useState(1);
+  const [loading, setLoading] = useState(false);
   const [haveMoreRecords, setHaveMoreRecords] = useState(true);
+
+  const [useDarkTheme, setUseDarkTheme] = useState(Storage.getUseDarkTheme());
+  const [primaryColor, setPrimaryColor] = useState(Storage.getPrimaryColor());
+  const [tableColumns, setTableColumns] = useState(Storage.getTableColumns());
 
   async function makeRequestToGetData() {
     if (haveMoreRecords) {
@@ -69,8 +73,8 @@ function App() {
     <ConfigProvider
       locale={ptBR}
       theme={{
-        algorithm: Storage.getUseDarkTheme() ? darkAlgorithm : defaultAlgorithm,
-        token: { colorPrimary: '#5A54F9' },
+        algorithm: useDarkTheme ? darkAlgorithm : defaultAlgorithm,
+        token: { colorPrimary: primaryColor },
       }}
     >
       <Spin
@@ -81,7 +85,7 @@ function App() {
         <Layout style={{ height: '100vh', width: '100vw' }}>
           <Header
             style={{
-              background: '#5A54F9',
+              background: primaryColor,
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'space-between',
@@ -101,7 +105,12 @@ function App() {
                 {
                   key: 1,
                   label: 'Buscador',
-                  children: <Finder tableColumns={tableColumns} />,
+                  children: (
+                    <Finder
+                      primaryColor={primaryColor}
+                      tableColumns={tableColumns}
+                    />
+                  ),
                 },
                 {
                   key: 2,
@@ -118,6 +127,10 @@ function App() {
                   label: 'Configurações',
                   children: (
                     <Settings
+                      useDarkTheme={useDarkTheme}
+                      setUseDarkTheme={setUseDarkTheme}
+                      primaryColor={primaryColor}
+                      setPrimaryColor={setPrimaryColor}
                       tableColumns={tableColumns}
                       setTableColumns={setTableColumns}
                     />
@@ -141,7 +154,7 @@ function App() {
               Created by&nbsp;
               <Link
                 type="primary"
-                style={{ color: '#5A54F9', fontSize: 16, textDecoration: 'underline' }}
+                style={{ color: primaryColor, fontSize: 16, textDecoration: 'underline' }}
                 href="https://linktr.ee/luizhenriquelobo"
                 target="_blank"
               >

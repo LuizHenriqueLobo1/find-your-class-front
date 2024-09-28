@@ -3,7 +3,7 @@ import { COLORS } from '../utils/utils';
 
 const { Text } = Typography;
 
-function renderColumn(element, type, disciplines) {
+function renderColumn(element, type, disciplines, primaryColor) {
   if (!element || !element.length) {
     return '';
   }
@@ -32,7 +32,7 @@ function renderColumn(element, type, disciplines) {
           textOverflow: 'ellipsis',
           marginInlineEnd: 0,
         }}
-        color={type === 1 ? '#5a54f9' : COLORS[disciplines.findIndex((value) => data.discipline.includes(value))]}
+        color={type === 1 ? primaryColor : COLORS[disciplines.findIndex((value) => data.discipline.includes(value))]}
       >
         {data.discipline}
       </Tag>
@@ -43,7 +43,7 @@ function renderColumn(element, type, disciplines) {
   );
 }
 
-export default function ResultTable({ dataSource, loading, type, disciplines, tableColumns }) {
+export default function ResultTable({ dataSource, loading, type, disciplines, tableColumns, primaryColor }) {
   return (
     <Table
       style={{ width: '80%', marginTop: 20 }}
@@ -63,7 +63,7 @@ export default function ResultTable({ dataSource, loading, type, disciplines, ta
           dataIndex: 'monday',
           key: 'monday',
           align: 'center',
-          render: (element) => renderColumn(element, type, disciplines),
+          render: (element) => renderColumn(element, type, disciplines, primaryColor),
           hidden: !tableColumns.includes(1),
         },
         {
@@ -71,7 +71,7 @@ export default function ResultTable({ dataSource, loading, type, disciplines, ta
           dataIndex: 'tuesday',
           key: 'tuesday',
           align: 'center',
-          render: (element) => renderColumn(element, type, disciplines),
+          render: (element) => renderColumn(element, type, disciplines, primaryColor),
           hidden: !tableColumns.includes(2),
         },
         {
@@ -79,7 +79,7 @@ export default function ResultTable({ dataSource, loading, type, disciplines, ta
           dataIndex: 'wednesday',
           key: 'wednesday',
           align: 'center',
-          render: (element) => renderColumn(element, type, disciplines),
+          render: (element) => renderColumn(element, type, disciplines, primaryColor),
           hidden: !tableColumns.includes(3),
         },
         {
@@ -87,7 +87,7 @@ export default function ResultTable({ dataSource, loading, type, disciplines, ta
           dataIndex: 'thursday',
           key: 'thursday',
           align: 'center',
-          render: (element) => renderColumn(element, type, disciplines),
+          render: (element) => renderColumn(element, type, disciplines, primaryColor),
           hidden: !tableColumns.includes(4),
         },
         {
@@ -95,7 +95,7 @@ export default function ResultTable({ dataSource, loading, type, disciplines, ta
           dataIndex: 'friday',
           key: 'friday',
           align: 'center',
-          render: (element) => renderColumn(element, type, disciplines),
+          render: (element) => renderColumn(element, type, disciplines, primaryColor),
           hidden: !tableColumns.includes(5),
         },
         {
@@ -103,7 +103,7 @@ export default function ResultTable({ dataSource, loading, type, disciplines, ta
           dataIndex: 'saturday',
           key: 'saturday',
           align: 'center',
-          render: (element) => renderColumn(element, type, disciplines),
+          render: (element) => renderColumn(element, type, disciplines, primaryColor),
           hidden: !tableColumns.includes(6),
         },
       ]}

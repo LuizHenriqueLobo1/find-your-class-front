@@ -1,19 +1,18 @@
-import { Divider, Flex, Select, Switch, Typography } from 'antd';
+import { ColorPicker, Divider, Flex, Select, Switch, Typography } from 'antd';
 import { useEffect, useState } from 'react';
 import { Storage } from '../storage/storage';
 
 const { Text, Link } = Typography;
 
-export default function Settings({ tableColumns, setTableColumns }) {
-  const [darkTheme, setDarkTheme] = useState(Storage.getUseDarkTheme());
+export default function Settings({
+  useDarkTheme,
+  setUseDarkTheme,
+  primaryColor,
+  setPrimaryColor,
+  tableColumns,
+  setTableColumns,
+}) {
   const [alwaysStartOnSearchTab, setAlwaysStartOnSearchTab] = useState(Storage.getAlwaysStartOnSearchTab());
-
-  async function changeTheme(value) {
-    Storage.setUseDarkTheme(value);
-    setDarkTheme(value);
-    await new Promise((resolve) => setTimeout(resolve, 100));
-    location.reload();
-  }
 
   function changeAlwaysStartOnSearchTab(value) {
     Storage.setAlwaysStartOnSearchTab(value);
@@ -41,21 +40,40 @@ export default function Settings({ tableColumns, setTableColumns }) {
         >
           <Text>Tema escuro:</Text>
           <Switch
-            style={{ marginTop: 3 }}
-            value={darkTheme}
-            onChange={changeTheme}
+            value={useDarkTheme}
+            onChange={(value) => {
+              Storage.setUseDarkTheme(value);
+              setUseDarkTheme(value);
+            }}
           />
         </Flex>
         <Flex
-          style={{ width: '100%' }}
+          style={{ width: '100%', marginTop: 3 }}
           align="center"
           justify="space-between"
         >
           <Text>Sempre iniciar na aba de busca:</Text>
           <Switch
-            style={{ marginTop: 3 }}
             value={alwaysStartOnSearchTab}
             onChange={changeAlwaysStartOnSearchTab}
+          />
+        </Flex>
+        <Flex
+          style={{ width: '100%', marginTop: 3 }}
+          align="center"
+          justify="space-between"
+        >
+          <Text>Cor primária:</Text>
+          <ColorPicker
+            showText
+            size="small"
+            value={primaryColor}
+            onChangeComplete={(color) => {
+              const hexColor = '#' + color.toHex();
+              Storage.setPrimaryColor(hexColor);
+              setPrimaryColor(hexColor);
+            }}
+            disabledAlpha
           />
         </Flex>
         <Divider style={{ margin: '10px 0' }} />
@@ -93,7 +111,7 @@ export default function Settings({ tableColumns, setTableColumns }) {
           </Text>
           <Link
             type="primary"
-            style={{ color: '#5A54F9', textDecoration: 'underline' }}
+            style={{ color: primaryColor, textDecoration: 'underline' }}
             href="https://docs.google.com/spreadsheets/d/1cCxv5gzbj5uAFJtyF6h-pxK4RXYurShUsLqO2ye6Ark"
             target="_blank"
           >

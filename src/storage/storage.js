@@ -23,6 +23,14 @@ export class Storage {
     storage.setItem('alwaysStartOnSearchTab', alwaysStartOnSearchTab);
   }
 
+  static setPrimaryColor(color) {
+    storage.setItem('primaryColor', color);
+  }
+
+  static getPrimaryColor() {
+    return storage.getItem('primaryColor') || '#5A54F9';
+  }
+
   static getAlwaysStartOnSearchTab() {
     return storage.getItem('alwaysStartOnSearchTab') === 'true';
   }

@@ -7,7 +7,7 @@ import ResultTable from './ResultTable';
 
 const { Text } = Typography;
 
-export default function Finder({ tableColumns }) {
+export default function Finder({ primaryColor, tableColumns }) {
   const [disciplineCode, setDisciplineCode] = useState('');
   const [finalData, setFinalData] = useState([]);
 
@@ -49,6 +49,7 @@ export default function Finder({ tableColumns }) {
           dataSource={finalData}
           type={1}
           tableColumns={tableColumns}
+          primaryColor={primaryColor}
         />
       </Flex>
     </Form>
