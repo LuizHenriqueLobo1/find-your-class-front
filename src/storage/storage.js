@@ -1,6 +1,16 @@
+import dayjs from 'dayjs';
+
 const storage = window.localStorage;
 
 export class Storage {
+  static setData(data) {
+    storage.setItem('data', JSON.stringify({ data, createdAt: dayjs().format('YYYY-MM-DD HH:mm:ss') }));
+  }
+
+  static getData() {
+    return JSON.parse(storage.getItem('data')) || null;
+  }
+
   static setUseDarkTheme(theme) {
     storage.setItem('useDarkTheme', theme);
   }

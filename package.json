@@ -14,6 +14,7 @@
     "@vercel/analytics": "^1.2.1",
     "antd": "^5.14.1",
     "axios": "^1.4.0",
+    "dayjs": "^1.11.13",
     "dotenv": "^16.1.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"

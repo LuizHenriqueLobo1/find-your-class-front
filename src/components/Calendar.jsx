@@ -1,39 +1,35 @@
 import { CalendarOutlined, CloseOutlined, InfoCircleOutlined, SaveOutlined } from '@ant-design/icons';
 import { Button, Flex, Form, Select, Tag, Tooltip, Typography, message } from 'antd';
 import { useEffect, useState } from 'react';
-import api from '../api/api';
 import { Storage } from '../storage/storage';
 import { COLORS, transformToTable } from '../utils/utils';
 import ResultTable from './ResultTable';
 
 const { Text } = Typography;
 
-export default function Calendar({ tableColumns }) {
+export default function Calendar({ loading, tableColumns }) {
   const [messageApi, contextHolder] = message.useMessage();
 
   const [disciplines, setDisciplines] = useState([]);
   const [finalData, setFinalData] = useState([]);
   const [generating, setGenerating] = useState(false);
 
-  async function generateCalendar(customDisciplines) {
+  async function generateCalendar(disciplines) {
     setGenerating(true);
     messageApi.destroy();
-    const response = await api
-      .post(
-        '/get-sheet-data-to-calendar',
-        { disciplines: customDisciplines || disciplines },
-        {
-          headers: {
-            token: import.meta.env.VITE_TOKEN,
-          },
+    const { data } = Storage.getData();
+    const filteredData = [];
+    for (const discipline of disciplines) {
+      for (const element of data) {
+        if (element[element.day].includes(discipline)) {
+          filteredData.push(element);
         }
-      )
-      .then((response) => (response.status === 200 && response.data ? transformToTable(response.data) : []))
-      .catch((_) => []);
-    if (response.length) {
-      setFinalData(response);
-      setGenerating(false);
+      }
     }
+    if (filteredData.length) {
+      setFinalData(transformToTable(filteredData));
+    }
+    setGenerating(false);
   }
 
   async function saveCalendar() {
@@ -52,7 +48,7 @@ export default function Calendar({ tableColumns }) {
       setDisciplines(calendar);
       generateCalendar(calendar);
     }
-  }, []);
+  }, [loading]);
 
   return (
     <Form>
@@ -115,7 +111,7 @@ export default function Calendar({ tableColumns }) {
             type="primary"
             style={{ marginTop: 5 }}
             loading={generating}
-            onClick={() => generateCalendar(null)}
+            onClick={() => generateCalendar(disciplines)}
             icon={<CalendarOutlined />}
           >
             Gerar

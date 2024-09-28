@@ -1,16 +1,18 @@
 import { SearchOutlined } from '@ant-design/icons';
 import { Button, Flex, Form, Input, Typography } from 'antd';
 import { useState } from 'react';
+import { Storage } from '../storage/storage';
 import { searchDiscipline } from '../utils/utils';
 import ResultTable from './ResultTable';
 
 const { Text } = Typography;
 
-export default function Finder({ data, tableColumns }) {
+export default function Finder({ tableColumns }) {
   const [disciplineCode, setDisciplineCode] = useState('');
   const [finalData, setFinalData] = useState([]);
 
   function searchRoom() {
+    const { data } = Storage.getData();
     if (disciplineCode.length) {
       const localFinalData = searchDiscipline(data, disciplineCode);
       setFinalData(localFinalData);
