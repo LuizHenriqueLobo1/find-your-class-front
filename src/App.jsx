@@ -25,6 +25,21 @@ function App() {
   const [primaryColor, setPrimaryColor] = useState(Storage.getPrimaryColor());
   const [tableColumns, setTableColumns] = useState(Storage.getTableColumns());
 
+  const [lastDatabaseUpdateDate, setLastDatabaseUpdateDate] = useState(null);
+
+  async function getLastDatabaseUpdate() {
+    setLoading(true);
+    const response = await api
+      .get(`/get-last-log`, {
+        headers: {
+          token: import.meta.env.VITE_TOKEN,
+        },
+      })
+      .then((response) => (response.status === 200 ? response.data : null))
+      .catch((_) => null);
+    setLastDatabaseUpdateDate(response ? dayjs(response.dateTime) : dayjs());
+  }
+
   async function makeRequestToGetData() {
     if (haveMoreRecords) {
       setLoading(true);
@@ -48,6 +63,8 @@ function App() {
   }
 
   useEffect(() => {
+    getLastDatabaseUpdate();
+
     const calendar = Storage.getCalendar();
     if (calendar.length && !Storage.getAlwaysStartOnSearchTab()) {
       setSelectedTab(2);
@@ -57,17 +74,16 @@ function App() {
   }, []);
 
   useEffect(() => {
-    const savedData = Storage.getData();
-    if (
-      !savedData ||
-      !savedData.data.length ||
-      dayjs(savedData.createdAt).startOf('day').isBefore(dayjs().startOf('day'))
-    ) {
-      makeRequestToGetData();
-    } else {
-      setData(savedData.data);
+    if (!!lastDatabaseUpdateDate) {
+      const savedData = Storage.getData();
+      if (!savedData || !savedData.data.length || lastDatabaseUpdateDate.isAfter(dayjs(savedData.createdAt))) {
+        makeRequestToGetData();
+      } else {
+        setData(savedData.data);
+        setLoading(false);
+      }
     }
-  }, [page]);
+  }, [lastDatabaseUpdateDate, page]);
 
   return (
     <ConfigProvider

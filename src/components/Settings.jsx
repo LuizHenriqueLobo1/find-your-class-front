@@ -106,13 +106,13 @@ export default function Settings({
           gap={10}
         >
           <Text style={{ textAlign: 'center' }}>
-            Esta aplicação utiliza os dados da planilha de alocação das aulas do semestre 2024.1 disponibilizada pelo
+            Esta aplicação utiliza os dados da planilha de alocação das aulas do semestre 2024.2 disponibilizada pelo
             IFBA.
           </Text>
           <Link
             type="primary"
             style={{ color: primaryColor, textDecoration: 'underline' }}
-            href="https://docs.google.com/spreadsheets/d/1cCxv5gzbj5uAFJtyF6h-pxK4RXYurShUsLqO2ye6Ark"
+            href="https://docs.google.com/spreadsheets/d/1gkE905DLcylUjtVySqsYR-z9MpIXBT1x"
             target="_blank"
           >
             Ir para planilha
