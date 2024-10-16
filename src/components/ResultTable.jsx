@@ -25,11 +25,9 @@ function renderColumn(element, type, disciplines, primaryColor) {
     >
       <Tag
         style={{
+          textAlign: 'center',
           fontWeight: 600,
-          maxWidth: 100,
-          whiteSpace: 'nowrap',
-          overflow: 'hidden',
-          textOverflow: 'ellipsis',
+          whiteSpace: 'wrap',
           marginInlineEnd: 0,
         }}
         color={type === 1 ? primaryColor : COLORS[disciplines.findIndex((value) => data.discipline.includes(value))]}
