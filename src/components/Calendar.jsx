@@ -70,7 +70,7 @@ export default function Calendar({ loading, tableColumns }) {
           mode="tags"
           size="large"
           placeholder="Adicione suas disciplinas para criar o calendário..."
-          style={{ minWidth: 370 }}
+          style={{ width: 370 }}
           suffixIcon={false}
           value={disciplines}
           onChange={(value) => {

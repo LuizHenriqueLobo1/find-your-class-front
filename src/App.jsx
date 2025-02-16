@@ -94,11 +94,11 @@ function App() {
       }}
     >
       <Spin
-        style={{ maxHeight: '100vh' }}
+        style={{ maxHeight: '100dvh' }}
         spinning={loading}
         size="large"
       >
-        <Layout style={{ height: '100vh', width: '100vw' }}>
+        <Layout style={{ height: '100dvh', width: '100vw' }}>
           <Header
             style={{
               background: primaryColor,
@@ -114,7 +114,7 @@ function App() {
               Find Your Class
             </Title>
           </Header>
-          <Content style={{ height: '100vh', overflowY: 'auto' }}>
+          <Content style={{ overflowY: 'auto' }}>
             <Tabs
               centered
               items={[

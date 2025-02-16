@@ -2,3 +2,13 @@
   margin: 0;
   padding: 0;
 }
+
+@media (max-width: 430px) {
+  .ant-select {
+    width: 94% !important;
+  }
+
+  .ant-layout-header {
+    justify-content: center !important;
+  }
+}

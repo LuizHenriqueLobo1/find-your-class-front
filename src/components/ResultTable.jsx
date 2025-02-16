@@ -1,4 +1,4 @@
-import { Flex, Table, Tag, Typography } from 'antd';
+import { Col, Flex, Row, Table, Tag, Typography } from 'antd';
 import { COLORS } from '../utils/utils';
 
 const { Text } = Typography;
@@ -43,69 +43,84 @@ function renderColumn(element, type, disciplines, primaryColor) {
 
 export default function ResultTable({ dataSource, loading, type, disciplines, tableColumns, primaryColor }) {
   return (
-    <Table
-      style={{ width: '80%', marginTop: 20 }}
-      scroll={{ y: '50vh', x: 800 }}
-      dataSource={dataSource}
-      loading={loading}
-      bordered
-      columns={[
-        {
-          title: 'Horários',
-          dataIndex: 'time',
-          key: 'time',
-          align: 'center',
-        },
-        {
-          title: 'Segunda-feira',
-          dataIndex: 'monday',
-          key: 'monday',
-          align: 'center',
-          render: (element) => renderColumn(element, type, disciplines, primaryColor),
-          hidden: !tableColumns.includes(1),
-        },
-        {
-          title: 'Terça-feira',
-          dataIndex: 'tuesday',
-          key: 'tuesday',
-          align: 'center',
-          render: (element) => renderColumn(element, type, disciplines, primaryColor),
-          hidden: !tableColumns.includes(2),
-        },
-        {
-          title: 'Quarta-feira',
-          dataIndex: 'wednesday',
-          key: 'wednesday',
-          align: 'center',
-          render: (element) => renderColumn(element, type, disciplines, primaryColor),
-          hidden: !tableColumns.includes(3),
-        },
-        {
-          title: 'Quinta-feira',
-          dataIndex: 'thursday',
-          key: 'thursday',
-          align: 'center',
-          render: (element) => renderColumn(element, type, disciplines, primaryColor),
-          hidden: !tableColumns.includes(4),
-        },
-        {
-          title: 'Sexta-feira',
-          dataIndex: 'friday',
-          key: 'friday',
-          align: 'center',
-          render: (element) => renderColumn(element, type, disciplines, primaryColor),
-          hidden: !tableColumns.includes(5),
-        },
-        {
-          title: 'Sábado',
-          dataIndex: 'saturday',
-          key: 'saturday',
-          align: 'center',
-          render: (element) => renderColumn(element, type, disciplines, primaryColor),
-          hidden: !tableColumns.includes(6),
-        },
-      ]}
-      pagination={false}
-    />
+    <Row
+      style={{
+        width: '100%',
+        justifyContent: 'center',
+      }}
+    >
+      <Col
+        xs={23}
+        sm={20}
+      >
+        <Table
+          style={{ marginTop: 20 }}
+          scroll={{ y: 'calc(100vh - 364px)', x: 800 }}
+          dataSource={dataSource}
+          loading={loading}
+          bordered
+          columns={[
+            {
+              width: 58,
+              title: ' ',
+              dataIndex: 'time',
+              key: 'time',
+              align: 'center',
+              fixed: 'left',
+              render: (value) => <div style={{ writingMode: 'sideways-lr', fontWeight: 600 }}>{value}</div>,
+            },
+            {
+              title: 'Segunda',
+              dataIndex: 'monday',
+              key: 'monday',
+              align: 'center',
+              render: (element) => renderColumn(element, type, disciplines, primaryColor),
+              hidden: !tableColumns.includes(1),
+            },
+            {
+              title: 'Terça',
+              dataIndex: 'tuesday',
+              key: 'tuesday',
+              align: 'center',
+              render: (element) => renderColumn(element, type, disciplines, primaryColor),
+              hidden: !tableColumns.includes(2),
+            },
+            {
+              title: 'Quarta',
+              dataIndex: 'wednesday',
+              key: 'wednesday',
+              align: 'center',
+              render: (element) => renderColumn(element, type, disciplines, primaryColor),
+              hidden: !tableColumns.includes(3),
+            },
+            {
+              title: 'Quinta',
+              dataIndex: 'thursday',
+              key: 'thursday',
+              align: 'center',
+              render: (element) => renderColumn(element, type, disciplines, primaryColor),
+              hidden: !tableColumns.includes(4),
+            },
+            {
+              title: 'Sexta',
+              dataIndex: 'friday',
+              key: 'friday',
+              align: 'center',
+              render: (element) => renderColumn(element, type, disciplines, primaryColor),
+              hidden: !tableColumns.includes(5),
+            },
+            {
+              title: 'Sábado',
+              dataIndex: 'saturday',
+              key: 'saturday',
+              align: 'center',
+              render: (element) => renderColumn(element, type, disciplines, primaryColor),
+              hidden: !tableColumns.includes(6),
+            },
+          ]}
+          pagination={false}
+        />
+      </Col>
+    </Row>
   );
 }
