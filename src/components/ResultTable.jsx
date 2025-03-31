@@ -41,7 +41,15 @@ function renderColumn(element, type, disciplines, primaryColor) {
   );
 }
 
-export default function ResultTable({ dataSource, loading, type, disciplines, tableColumns, primaryColor }) {
+export default function ResultTable({
+  dataSource,
+  loading,
+  type,
+  disciplines,
+  tableColumns,
+  primaryColor,
+  disciplineName,
+}) {
   return (
     <Row
       style={{
@@ -53,6 +61,11 @@ export default function ResultTable({ dataSource, loading, type, disciplines, ta
         xs={23}
         sm={20}
       >
+        {disciplineName && (
+          <Text style={{ marginLeft: 16 }}>
+            <span style={{ fontWeight: 600 }}>Disciplina</span>: {disciplineName}
+          </Text>
+        )}
         <Table
           style={{ marginTop: 20 }}
           scroll={{ y: 'calc(100vh - 364px)', x: 800 }}
