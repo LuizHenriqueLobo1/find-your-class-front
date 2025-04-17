@@ -112,7 +112,7 @@ export default function Settings({
           <Link
             type="primary"
             style={{ color: primaryColor, textDecoration: 'underline' }}
-            href="https://docs.google.com/spreadsheets/d/1LaosQeF82Cvc8Eyl7VOdHuEPtM6yPly"
+            href={import.meta.env.VITE_SHEET_URL}
             target="_blank"
           >
             Ir para planilha
