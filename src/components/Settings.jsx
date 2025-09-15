@@ -106,8 +106,9 @@ export default function Settings({
           gap={10}
         >
           <Text style={{ textAlign: 'center' }}>
-            Esta aplicação utiliza os dados da planilha de alocação das aulas do semestre 2025.1 disponibilizada pelo
-            IFBA.
+            {`Esta aplicação utiliza os dados da planilha de alocação das aulas do semestre ${
+              import.meta.env.VITE_SEMESTER
+            } disponibilizada pelo IFBA.`}
           </Text>
           <Link
             type="primary"
